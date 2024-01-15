@@ -10,35 +10,41 @@
 #define PLAYER_SPEED 1
 #define INFO_BOARD_SIZE_X 5
 #define INFO_BOARD_SIZE_Y 18
+#define CONTROLS_BOARD_SIZE_X 18
+#define CONTROLS_BOARD_SIZE_Y LINES/3
 #define DIG_WIN 1337
 
 
 typedef enum {
     EMPTY,
     OCCUPIED,
+    WALL
 } TileType;
 
 typedef enum {
     UP,
     DOWN,
     LEFT,
-    RIGHT
+    RIGHT,
 } Direction;
 
 typedef struct {
     int x;
     int y;
-    int dug;
+    char dug;
     TileType type;
 } Tile;
 
 void drawPlayer(Direction);
 void drawMap(WINDOW*, int, int, Direction, int, int);
+void drawBoard(WINDOW*, int, int);
+void drawControls(WINDOW*);
 
 void initMap();
 void initGame();
 
 void dig(int, int);
 void getFlag();
+bool check_col(int, int);
 
 Direction handleKeyPressed(char, int*, int*);
