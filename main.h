@@ -11,7 +11,7 @@
 #define INFO_BOARD_SIZE_X 5
 #define INFO_BOARD_SIZE_Y 18
 #define CONTROLS_BOARD_SIZE_X 18
-#define CONTROLS_BOARD_SIZE_Y LINES/3
+#define CONTROLS_BOARD_SIZE_Y LINES/4
 #define DIG_WIN 1337
 
 
@@ -29,9 +29,8 @@ typedef enum {
 } Direction;
 
 typedef struct {
-    int x;
-    int y;
-    char dug;
+    int x, y;
+    int dug;
     TileType type;
 } Tile;
 
@@ -44,7 +43,7 @@ void initMap();
 void initGame();
 
 void dig(int, int);
-void getFlag();
+void moveChest();
 bool check_col(int, int);
 
 Direction handleKeyPressed(char, int*, int*);

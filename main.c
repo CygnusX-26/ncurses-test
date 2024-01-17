@@ -23,11 +23,11 @@ int main() {
     WINDOW *info = newwin(INFO_BOARD_SIZE_X, INFO_BOARD_SIZE_Y, 0, (COLS-INFO_BOARD_SIZE_Y)/2);
     WINDOW *controls = newwin(CONTROLS_BOARD_SIZE_Y, CONTROLS_BOARD_SIZE_X, (LINES-CONTROLS_BOARD_SIZE_X)/2, 0);
 
-    box(stdscr, 5, 0);
+    box(stdscr, 0, 0);
     box(win, 0, 0);
 
-    wprintw(info, " Current Tile: %x\n", MAP[PLAYER_START_X-offsetx-1][PLAYER_START_Y-offsety-1].type);
-    wprintw(info, " Times Dug: %d\n", MAP[PLAYER_START_X-offsetx-1][PLAYER_START_Y-offsety-1].dug);
+    wprintw(info, " Current Tile: %x\n", MAP[playerx-offsetx-1][playery-offsety-1].type);
+    wprintw(info, " Times Dug: %lx\n", MAP[playerx-offsetx-1][playery-offsety-1].dug);
     
     refresh();
     wrefresh(win); 
@@ -41,14 +41,17 @@ int main() {
         werase(info);
         werase(win);
         
-        wprintw(info, " Current Tile: %x\n", MAP[PLAYER_START_X-offsetx-1][PLAYER_START_Y-offsety-1].type);
-        wprintw(info, " Times Dug: %d\n", MAP[PLAYER_START_X-offsetx-1][PLAYER_START_Y-offsety-1].dug);
+        wprintw(info, " Current Tile: %x\n", MAP[playerx-offsetx-1][playery-offsety-1].type);
+        wprintw(info, " Times Dug: %lx\n", MAP[playerx-offsetx-1][playery-offsety-1].dug);
+        wprintw(info, " addr of stack: %p\n", &offsetx);
 
         wrefresh(win);
         wrefresh(info);
         refresh();
-        if (MAP[PLAYER_START_X-offsetx-1][PLAYER_START_Y-offsety-1].type == OCCUPIED && rand() % 1337 == 0) {
-            getFlag();
+        if (MAP[playerx-offsetx-1][playery-offsety-1].type == OCCUPIED && MAP[playerx-offsetx-1][playery-offsety-1].dug > 0) {
+            // MAP[playerx-offsetx-1][playery-offsety-1].type = EMPTY;
+            // MAP[playerx-offsetx-1][playery-offsety-2].type = OCCUPIED;
+            // moveChest();
         }
     }
 	endwin();	
@@ -97,8 +100,8 @@ void drawControls(WINDOW* controls) {
 
 /* in use */
 void initMap() {
-    int location_x = rand() % (MAP_WIDTH-2);
-    int location_y = rand() % (MAP_HEIGHT-2);
+    int location_x = 4;//rand() % (MAP_WIDTH-1);
+    int location_y = 4;//rand() % (MAP_HEIGHT-1);
     for (int i = 0; i < MAP_WIDTH; i++) {
         for (int j = 0; j < MAP_HEIGHT; j++) {
             MAP[i][j].x = i;
@@ -168,16 +171,16 @@ void dig(int offsetx, int offsety) {
 
 /* in use */
 bool check_col(int offsetx, int offsety) {
-    if (MAP[PLAYER_START_X-offsetx-1][PLAYER_START_Y-offsety-1].type == WALL) {
-        return true;
+    if (MAP[playerx-offsetx-1][playery-offsety-1].type == WALL) {
+        return false;
     }
     return false;
 }
 
 /* in use */
-void getFlag() {
+void moveChest() {
     endwin();
-    printf("You won!");
+    printf("win\n");
     /* add flag system here */
     exit(0);
 }
